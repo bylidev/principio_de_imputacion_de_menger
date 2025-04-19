@@ -1,0 +1,39 @@
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Principio de imputacion de menger</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="icon" href="/assets/icon.png" type="image/png" sizes="32x32">
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+    <div id="header">
+        <div>
+            <span><img src="./assets/icon.png" width="40px" height="40px"></span>
+            <small>Actualizado: <span id="updateDate"></span></small>
+        </div>
+        <button id="muteBtn" onclick="toggleAudio()">🔇</button>
+    </div>
+
+    <audio id="mileiAudio" autoplay>
+        <source src="/assets/menger.mp3" type="audio/mpeg">
+        Tu navegador no soporta audio.
+    </audio>
+
+    <div id="map"></div>
+
+    <div id="disclaimer">
+        Datos obtenidos de <a href="https://preciosclaros.gob.ar/" target="_blank">preciosclaros.gob.ar</a>
+    </div>
+
+    <a href="https://github.com/bylidev/principio_de_imputacion_de_menger/tree/master/public" target="_blank" title="Ver en GitHub" id="githubLink">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="white" width="10" height="10">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.54 5.47 7.61.4.07.55-.17.55-.39 0-.18-.01-.69-.01-1.36-2.22.48-2.68-1.07-2.68-1.07-.36-.91-.88-1.16-.88-1.16-.72-.48.06-.47.06-.47.8.06 1.22.83 1.22.83.71 1.24 1.87.88 2.32.68.07-.51.28-.88.5-1.08-1.76-.2-3.61-.88-3.61-3.92 0-.87.31-1.58.82-2.13-.08-.2-.36-.94.08-1.95 0 0 .67-.21 2.18.83 1.18-.33 2.44-.33 3.62 0 1.51-1.04 2.18-.83 2.18-.83.44 1.01.16 1.75.08 1.95.51.55.82 1.26.82 2.13 0 3.04-1.85 3.72-3.61 3.92.29.25.55.74.55 1.49 0 1.08-.01 1.94-.01 2.21 0 .23.15.46.55.39C13.71 14.54 16 11.54 16 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+    </a>
+
+    <script src="./index.js"></script>
+</body>
+</html>
