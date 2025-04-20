@@ -1,0 +1,19 @@
+name: Webhook CI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  webhook-commit:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Ejecutar todo en un solo run
+      run: |
+        git config user.name "github-actions"
+        git config user.email "github-actions@github.com"
+        git checkout dev
+        curl -L -o archivo.txt <URL_DEL_ARCHIVO>
+        git add archivo.txt
+        git commit -m "Actualizado desde webhook $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+        git push origin dev
