@@ -7,9 +7,9 @@ fetch('/assets/data.json')
     data.forEach(s => {
       const incremento = s.promedio_incremento_pct;
       let color = 'blue';
-      if (incremento > 20) color = 'red';
-      else if (incremento > 10) color = 'orange';
-      else if (incremento > 5) color = 'yellow';
+      if (incremento > 10) color = 'red';
+      else if (incremento > 5) color = 'orange';
+      else if (incremento > 3) color = 'yellow';
       else if (incremento >= 0) color = 'green';
 
       // Crea un marcador con un popup detallado
@@ -23,11 +23,11 @@ fetch('/assets/data.json')
           <strong>Comercio:</strong> ${s.comercio_razon_social} <br>
           <strong>Sucursal:</strong> ${s.sucursales_nombre} <br>
           <strong>Localidad:</strong> ${s.sucursales_localidad} <br>
-          <strong>Incremento mayor a precios minimos encontrados:</strong> ${s.promedio_incremento_pct>100?"+100":s.promedio_incremento_pct}% <br>
+          <strong>Este local tiene los precios un ${s.promedio_incremento_pct>100?"+100":s.promedio_incremento_pct}% mas caro.</strong><br>
         `);
     });
   });
-  
+
   const audio = document.getElementById('mileiAudio');
   const btn = document.getElementById('muteBtn');
   const updateDate = document.getElementById('updateDate');
