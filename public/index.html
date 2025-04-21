@@ -7,6 +7,9 @@
     <link rel="icon" href="/assets/icon.png" type="image/png" sizes="32x32">
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
 </head>
 <body>
     <div id="header">
@@ -25,15 +28,19 @@
     <div id="map"></div>
 
     <div id="disclaimer">
-        Datos obtenidos de <a href="https://preciosclaros.gob.ar/" target="_blank">preciosclaros.gob.ar</a>
+        Datos obtenidos de <a href="https://datos.produccion.gob.ar/dataset/sepa-precios" target="_blank">preciosclaros.gob.ar</a>
     </div>
 
-    <a href="https://github.com/bylidev/principio_de_imputacion_de_menger/tree/master/public" target="_blank" title="Ver en GitHub" id="githubLink">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="white" width="10" height="10">
-            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.54 5.47 7.61.4.07.55-.17.55-.39 0-.18-.01-.69-.01-1.36-2.22.48-2.68-1.07-2.68-1.07-.36-.91-.88-1.16-.88-1.16-.72-.48.06-.47.06-.47.8.06 1.22.83 1.22.83.71 1.24 1.87.88 2.32.68.07-.51.28-.88.5-1.08-1.76-.2-3.61-.88-3.61-3.92 0-.87.31-1.58.82-2.13-.08-.2-.36-.94.08-1.95 0 0 .67-.21 2.18.83 1.18-.33 2.44-.33 3.62 0 1.51-1.04 2.18-.83 2.18-.83.44 1.01.16 1.75.08 1.95.51.55.82 1.26.82 2.13 0 3.04-1.85 3.72-3.61 3.92.29.25.55.74.55 1.49 0 1.08-.01 1.94-.01 2.21 0 .23.15.46.55.39C13.71 14.54 16 11.54 16 8c0-4.42-3.58-8-8-8z"/>
-        </svg>
-    </a>
-
+    <div class="social-icons">
+        <a href="https://github.com/bylidev/principio_de_imputacion_de_menger/tree/master/public" target="_blank" title="Ver en GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.54 5.47 7.61.4.07.55-.17.55-.39 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.01.08-2.11 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.91.08 2.11.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .22.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+        <a href="https://twitter.com/DonDinoKing" target="_blank" title="Ver en Twitter">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>
+        </a>
+    </div>
     <script src="./index.js"></script>
 </body>
 </html>

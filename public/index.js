@@ -5,11 +5,11 @@ fetch('/assets/data.json')
   .then(res => res.json())
   .then(data => {
     data.forEach(s => {
-      const incremento = s.promedio_incremento_pct;
+      const incremento = s.incremento_pct;
       let color = 'blue';
-      if (incremento > 10) color = 'red';
-      else if (incremento > 5) color = 'orange';
-      else if (incremento > 3) color = 'yellow';
+      if (incremento > 30) color = 'gray';
+      else if (incremento > 20) color = 'red';
+      else if (incremento > 10) color = 'orange';
       else if (incremento >= 0) color = 'green';
 
       // Crea un marcador con un popup detallado
@@ -22,8 +22,7 @@ fetch('/assets/data.json')
         .bindPopup(`
           <strong>Comercio:</strong> ${s.comercio_razon_social} <br>
           <strong>Sucursal:</strong> ${s.sucursales_nombre} <br>
-          <strong>Localidad:</strong> ${s.sucursales_localidad} <br>
-          <strong>Este local tiene los precios un ${s.promedio_incremento_pct>100?"+100":s.promedio_incremento_pct}% mas caro.</strong><br>
+          <strong>Este local tiene un devio del ${s.incremento_pct>100?"N/A":s.incremento_pct}%</strong><br>
         `);
     });
   });
