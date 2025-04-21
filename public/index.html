@@ -10,6 +10,8 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
+    <link href="https://unpkg.com/tippy.js@6.3.1/dist/tippy.css" rel="stylesheet">
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy.umd.min.js"></script>
 </head>
 <body>
     <div id="header">
@@ -40,12 +42,19 @@
         <a href="https://twitter.com/DonDinoKing" target="_blank" title="Ver en Twitter">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>
         </a>
-        <a href="https://link.mercadopago.com.ar/principiomenger"
-           target="_blank"
-           title="Colaborá con nosotros ❤️! 
-            Queremos que el ciudadano tenga herramientas para encontrar el mejor precio de mercado.
-            Tenemos muchas ideas en mente 😄">
+        <a href="https://link.mercadopago.com.ar/principiomenger" target="_blank" class="heart" title="
+            Colabora con nosotros ❤️ !
+            Tenemos muchas ideas para que el ciudadano 
+            acceda a bienes de mejor calidad a un menor precio">❤️</a>
+
     </div>
     <script src="./index.js"></script>
+    <script>
+      tippy('.heart', {
+        placement: 'top', // Ubicación del tooltip
+        animation: 'fade', // Efecto de aparición
+        arrow: true, // Mostrar flecha
+      });
+    </script>
 </body>
 </html>
