@@ -71,3 +71,13 @@ body{
     width: 16px;              
     height: 16px;             
   }
+.heart {
+  animation: blink 1s infinite;
+  text-decoration: none;
+  font-size: 1.5rem;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
