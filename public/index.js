@@ -17,7 +17,7 @@ fetch('/assets/data.json')
         color,
         fillColor: color,
         fillOpacity: 1,
-        radius: 50
+        radius: 100
       }).addTo(map)
         .bindPopup(`
           <strong>Comercio:</strong> ${s.comercio_razon_social} <br>
