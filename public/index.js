@@ -7,9 +7,9 @@ fetch('/assets/data.json')
     data.forEach(s => {
       const incremento = s.incremento_pct;
       let color = 'blue';
-      if (incremento > 30) color = 'gray';
-      else if (incremento > 20) color = 'red';
-      else if (incremento > 10) color = 'orange';
+      if (incremento > 100) color = 'gray';
+      else if (incremento > 30) color = 'red';
+      else if (incremento > 11) color = 'orange';
       else if (incremento >= 0) color = 'green';
 
       // Crea un marcador con un popup detallado
@@ -29,7 +29,7 @@ fetch('/assets/data.json')
 
   const audio = document.getElementById('mileiAudio');
   const btn = document.getElementById('muteBtn');
-  const updateDate = document.getElementById('updateDate');
+  const updateDate = "21/04/2025"
   
   updateDate.textContent = new Date().toLocaleDateString();
   
