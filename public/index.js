@@ -29,9 +29,9 @@ fetch('/assets/data.json')
 
   const audio = document.getElementById('mileiAudio');
   const btn = document.getElementById('muteBtn');
-  const updateDate = "21/04/2025"
+  const updateDate = document.getElementById('updateDate');
   
-  updateDate.textContent = new Date().toLocaleDateString();
+  updateDate.textContent = "21/04/2025";
   
   function toggleAudio() {
       audio.muted = !audio.muted;
