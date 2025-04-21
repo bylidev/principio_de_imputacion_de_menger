@@ -22,7 +22,7 @@ fetch('/assets/data.json')
         .bindPopup(`
           <strong>Comercio:</strong> ${s.comercio_razon_social} <br>
           <strong>Sucursal:</strong> ${s.sucursales_nombre} <br>
-          <strong>Este local tiene un devio del ${s.incremento_pct>100?"N/A":s.incremento_pct}%</strong><br>
+          <strong>Diferencia promedio al mínimo de mercado ${s.incremento_pct>100?"N/A":s.incremento_pct}%</strong><br>
         `);
     });
   });
