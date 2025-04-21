@@ -38,7 +38,7 @@ body{
     position: fixed;
     bottom: 15px;
     right: 15px;
-    background: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.3);
     color: #fff;
     padding: 5px 10px;
     border-radius: 8px;
@@ -46,12 +46,28 @@ body{
     font-family: sans-serif;
     z-index: 1000;
 }
-#githubLink {
+.social-icons {
     position: fixed;
     bottom: 10px;
     left: 10px;
-    background: rgba(0, 0, 0, 0.7);
-    padding: 10px;
+    display: flex;
+    gap: 10px;
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 8px;
     border-radius: 8px;
     z-index: 1000;
-}
+  }
+  .social-icons a svg {
+    width: 20px;
+    height: 20px;
+    fill: white;
+    transition: fill 0.3s;
+  }
+  .social-icons a:hover svg {
+    fill: #1DA1F2;
+  }
+  .social-icons svg {
+    fill: white;              
+    width: 16px;              
+    height: 16px;             
+  }

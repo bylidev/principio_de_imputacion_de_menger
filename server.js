@@ -13,11 +13,11 @@ const pool = new Pool({
   port: 5432,
 });
 // Servir archivos estáticos (HTML, JS, CSS, etc.)
-app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Redirigir cualquier ruta a index.html
 app.get('', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist/index.html'));
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.get('/sucursales', async (req, res) => {
@@ -31,7 +31,7 @@ app.get('/sucursales', async (req, res) => {
 
 app.get('/sucursales2', async (req, res) => {
   try {
-    const result = await pool.query("select * from vista_incrementos_sucursales;");
+    const result = await pool.query("select * from increments_avg;");
     res.json(result.rows);
   } catch (err) {
     res.status(500).send(err.toString());
