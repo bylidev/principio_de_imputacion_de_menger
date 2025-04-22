@@ -17,12 +17,12 @@ fetch('/assets/data.json')
         color,
         fillColor: color,
         fillOpacity: 1,
-        radius: 100
+        radius: 50
       }).addTo(map)
         .bindPopup(`
           <strong>Comercio:</strong> ${s.comercio_razon_social} <br>
           <strong>Sucursal:</strong> ${s.sucursales_nombre} <br>
-          <strong>Diferencia promedio a mínimos de mercado ${s.incremento_pct>100?"N/A":s.incremento_pct}%</strong><br>
+          <strong>Los precios promedio se desvian ${s.incremento_pct>100?"N/A":s.incremento_pct}% de los mejores precios del mercado.</strong><br>
         `);
     });
   });
@@ -31,7 +31,7 @@ fetch('/assets/data.json')
   const btn = document.getElementById('muteBtn');
   const updateDate = document.getElementById('updateDate');
   
-  updateDate.textContent = "21/04/2025";
+  updateDate.textContent = "22/04/2025";
   
   function toggleAudio() {
       audio.muted = !audio.muted;
