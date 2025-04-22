@@ -33,7 +33,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
           <strong>Comercio:</strong> ${s.comercio_razon_social} <br>
           <strong>Sucursal:</strong> ${s.sucursales_nombre} <br>
           <strong>Los precios promedio se desvian ${s.incremento_pct>100?"N/A":s.incremento_pct}% de los mejores precios del mercado.</strong><br>
-          <strong>Variación respecto a ayer: </strong><span style="color:${pvarMin1<0?'red':'green'}">${pvarMin1}%</span><br>
+          <strong>Variación respecto a ayer: </strong><span style="color:${pvarMin1<0?'red':'green'}">${pvarMin1}% ${pvarMin1 < 0 ? '📉' : '📈'}</span><br>
         `);
     });
   });
