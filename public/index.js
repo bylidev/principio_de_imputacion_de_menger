@@ -42,7 +42,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
   const btn = document.getElementById('muteBtn');
   const updateDate = document.getElementById('updateDate');
   
-  updateDate.textContent = "22/04/2025";
+  updateDate.textContent = "23/04/2025";
   
   function toggleAudio() {
       audio.muted = !audio.muted;
