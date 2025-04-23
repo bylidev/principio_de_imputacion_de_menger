@@ -1,0 +1,84 @@
+.leaflet-control-attribution {
+    display: none !important;
+}
+body{
+    margin: 0 !important;
+}
+#header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background: #e19011;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    font-family: sans-serif;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+#muteBtn {
+    margin-right: 35px;
+    background: white;
+    color: #0a3d62;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+#map {
+    margin-top: 50px;
+    height: calc(100vh - 60px);
+}
+#disclaimer {
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 0.5rem;
+    font-family: sans-serif;
+    z-index: 1000;
+}
+.social-icons {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 8px;
+    border-radius: 8px;
+    z-index: 1000;
+  }
+  .social-icons a svg {
+    width: 20px;
+    height: 20px;
+    fill: white;
+    transition: fill 0.3s;
+  }
+  .social-icons a:hover svg {
+    fill: #1DA1F2;
+  }
+  .social-icons svg {
+    fill: white;              
+    width: 16px;              
+    height: 16px;             
+  }
+.heart {
+  animation: blink 1s infinite;
+  text-decoration: none;
+  font-size: 1.5rem;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
