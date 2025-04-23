@@ -31,7 +31,6 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
       }).addTo(map)
         .bindPopup(`
           <strong>${s.sucursales_tipo} ${s.sucursales_nombre}</strong><br>
-          <strong>Razon social:</strong> ${s.comercio_razon_social} <br>
           <strong>Los precios promedio se desvian ${s.incremento_pct>100?"N/A":s.incremento_pct}% de los mejores precios del mercado.</strong><br>
           <strong>Variación respecto a ayer: </strong><span style="color:${pvarMin1<0?'red':'green'}">${pvarMin1}% ${pvarMin1 < 0 ? '📉' : '📈'}</span><br>
         `);
