@@ -1,3 +1,8 @@
+# 🧩 Proyecto Open Source  
+- Dejá tu MR con el JSON o fuente de datos a agregar.  
+- Luego de aprobado, se sube directo a producción.
+- Se pueden agregar como colaboradores
+- 
 # increments_avg
 
 Calcula, por sucursal, el **porcentaje promedio de incremento de precios** respecto al **precio mínimo global** de cada producto.
