@@ -22,12 +22,13 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
       else if (incremento > 11) color = 'orange';
       else if (incremento >= 0) color = 'green';
       let varMin1 = dataMin1[s.sucursales_latitud + s.sucursales_longitud];
-      let pvarMin1 = (incremento - varMin1).toFixed(2);
+      let pvarMin1 = varMin1?(incremento - varMin1).toFixed(2):'N/A';
       L.circle([s.sucursales_latitud, s.sucursales_longitud], {
         color,
         fillColor: color,
-        fillOpacity: 1,
-        radius: 50
+        fillOpacity: .5,
+        weight: 0,
+        radius: 100
       }).addTo(map)
         .bindPopup(`
           <strong>${s.sucursales_tipo} ${s.sucursales_nombre}</strong><br><br>
