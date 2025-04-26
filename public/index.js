@@ -26,13 +26,15 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
       L.circle([s.sucursales_latitud, s.sucursales_longitud], {
         color,
         fillColor: color,
-        fillOpacity: .5,
-        weight: .1,
-        radius: 5
+        fillOpacity: 1,
+        weight: 1,
+        radius: 30
       }).addTo(map)
         .bindPopup(`
-          <strong>${s.sucursales_tipo} ${s.sucursales_nombre}</strong><br><br>
-         
+          <strong>${s.sucursales_tipo}</strong><br>
+          Sucursal: <strong>${s.sucursales_nombre}</strong><br>
+          
+          <br>
           <strong>Los precios promedio se desvian ${s.incremento_pct>100?"N/A":s.incremento_pct}% de los mejores precios del mercado.</strong><br>
           <strong>Variación respecto a ayer: </strong><span style="color:${pvarMin1<0?'red':'green'}">${pvarMin1}% ${pvarMin1 < 0 ? '📉' : '📈'}</span><br>
         `);
