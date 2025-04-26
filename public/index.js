@@ -27,8 +27,8 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
         color,
         fillColor: color,
         fillOpacity: .5,
-        weight: 0,
-        radius: 100
+        weight: .1,
+        radius: 5
       }).addTo(map)
         .bindPopup(`
           <strong>${s.sucursales_tipo} ${s.sucursales_nombre}</strong><br><br>
@@ -43,7 +43,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
   const btn = document.getElementById('muteBtn');
   const updateDate = document.getElementById('updateDate');
   
-  updateDate.textContent = "25/04/2025";
+  updateDate.textContent = "26/04/2025";
   
   function toggleAudio() {
       audio.muted = !audio.muted;
