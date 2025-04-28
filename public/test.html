@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gráfico de Aumentos de Precios por Marca</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <h2>Evolución de Precios por Marca (Aumentos)</h2>
+  <canvas id="graficoAumentos" width="400" height="200"></canvas>
+
+  <script>
+    // Hacer el GET para obtener los datos de /aumentos
+    fetch('/aumentos')
+      .then(response => response.json())
+      .then(data => {
+        // Ordenar las fechas
+        const marcas = [...new Set(data.map(d => d.productos_marca))]; // Obtener las marcas únicas
+        const fechas = [...new Set(data.map(d => new Date(d.fecha).toISOString().split('T')[0]))]; // Obtener fechas únicas
+        fechas.sort((a, b) => new Date(a) - new Date(b)); // Ordenar las fechas cronológicamente
+
+        // Organizar los datos para cada marca
+        const dataset = marcas.map(marca => {
+          const preciosPorFecha = fechas.map(fecha => {
+            const producto = data.find(d => d.productos_marca === marca && new Date(d.fecha).toISOString().split('T')[0] === fecha);
+            return producto ? producto.precio : null;  // Si no hay precio, es null
+          });
+          return {
+            label: marca,
+            data: preciosPorFecha,
+            borderColor: getRandomColor(),
+            fill: false
+          };
+        });
+
+        // Función para generar un color aleatorio para cada línea
+        function getRandomColor() {
+          const letters = '0123456789ABCDEF';
+          let color = '#';
+          for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+          }
+          return color;
+        }
+
+        // Crear el gráfico con Chart.js
+        const ctx = document.getElementById('graficoAumentos').getContext('2d');
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: fechas,  // Fechas ordenadas
+            datasets: dataset
+          },
+          options: {
+            responsive: true,
+            title: {
+              display: true,
+              text: 'Evolución de Aumentos de Precios por Marca'
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                title: {
+                  display: true,
+                  text: 'Precio'
+                }
+              },
+              x: {
+                title: {
+                  display: true,
+                  text: 'Fecha'
+                }
+              }
+            }
+          }
+        });
+      })
+      .catch(error => {
+        console.error('Error al obtener los datos:', error);
+      });
+  </script>
+
+</body>
+</html>

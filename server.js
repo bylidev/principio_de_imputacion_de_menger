@@ -19,17 +19,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
-
-app.get('/sucursales', async (req, res) => {
+app.get('/test', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/test.html'));
+});
+app.get('/aumentos', async (req, res) => {
   try {
-    const result = await pool.query('SELECT sucursales_latitud, sucursales_longitud, sucursales_nombre FROM sucursales');
+    const result = await pool.query('SELECT * from public.precio_promedio_marca_diario');
     res.json(result.rows);
   } catch (err) {
     res.status(500).send(err.toString());
   }
 });
 
-app.get('/sucursales2', async (req, res) => {
+app.get('/sucursales', async (req, res) => {
   try {
     const result = await pool.query("select * from increments_avg;");
     res.json(result.rows);
