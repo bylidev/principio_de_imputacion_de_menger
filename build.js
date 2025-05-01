@@ -19,11 +19,14 @@ async function minifyAndCopyAssets() {
     const cssPath = path.join(publicPath, 'styles.css');
     const dataPath = path.join(publicPath, 'assets', 'data.json');
     const dataMin1dPath = path.join(publicPath, 'assets', 'dataMin1d.json');
+    const metadataPath = path.join(publicPath, 'assets', 'metadata.json');
 
     const jsHash = generateHash(jsPath);
     const cssHash = generateHash(cssPath);
     const dataHash = generateHash(dataPath);
     const dataMin1dHash = generateHash(dataMin1dPath);
+    const metadataHash = generateHash(metadataPath);
+    const newMetadataName = `metadata.${metadataHash}.json`;
 
     const newJsName = `index.${jsHash}.js`;
     const newCssName = `styles.${cssHash}.css`;
@@ -35,10 +38,12 @@ async function minifyAndCopyAssets() {
 
     fs.copyFileSync(dataPath, path.join(distPath, newDataName));
     fs.copyFileSync(dataMin1dPath, path.join(distPath, dataMin1dName));
+    fs.copyFileSync(metadataPath, path.join(distPath, newMetadataName));
 
     let jsOriginal = fs.readFileSync(jsPath, 'utf-8');
     jsOriginal = jsOriginal.replace('/assets/data.json', `/${newDataName}`)
-                           .replace('/assets/dataMin1d.json', `/${dataMin1dName}`);
+                           .replace('/assets/dataMin1d.json', `/${dataMin1dName}`)
+                           .replace('/assets/metadata.json', `/${newMetadataName}`);
 
     const jsMinified = await Terser.minify(jsOriginal);
     fs.writeFileSync(path.join(distPath, newJsName), jsMinified.code);
