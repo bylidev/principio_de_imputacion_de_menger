@@ -45,8 +45,12 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
   const btn = document.getElementById('muteBtn');
   const updateDate = document.getElementById('updateDate');
   
-  updateDate.textContent = "30/04/2025";
-  
+  fetch('/assets/metadata.json')
+    .then(res => res.json())
+    .then(data => {
+      updateDate.textContent = `${data.updatedAt}`;
+    })
+    .catch(() => updateDate.textContent = "2025");  
   function toggleAudio() {
       audio.muted = !audio.muted;
       btn.textContent = audio.muted ? '🔇' : '🔊';
