@@ -20,40 +20,26 @@
             margin: 0;
             overflow: hidden;
             color: white;
+            width: 100%;
         }
         #canvas-container {
             position: relative;
-            width: 100vw;
+            width: 100%;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            padding-top: 20px;
+            padding-top: 0;
+            overflow: hidden;
         }
         canvas {
             background-color: #ffffff;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             cursor: grab;
-            border-radius: 4px;
+            max-width: 100%;
         }
         canvas:active {
             cursor: grabbing;
-        }
-        .instructions {
-            position: fixed;
-            bottom: 30px;
-            background: rgba(13, 13, 13, 0.8);
-            backdrop-filter: blur(10px);
-            padding: 12px 28px;
-            border-radius: 99px;
-            font-size: 13px;
-            font-weight: 500;
-            pointer-events: none;
-            border: 1px solid rgba(138, 43, 226, 0.4);
-            color: #eee;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
         }
     </style>
 </head>
@@ -63,46 +49,37 @@
         <canvas id="informeCanvas"></canvas>
     </div>
 
-    <div class="instructions">Navegación: Rueda del mouse o arrastre vertical</div>
-
     <script>
         const canvas = document.getElementById('informeCanvas');
         const ctx = canvas.getContext('2d', { alpha: false });
 
         const docWidth = 800;
-        const docHeight = 2150; 
+        const docHeight = 1950; // Ajustado por la eliminación de un item
         
         const dpr = window.devicePixelRatio || 1;
-        canvas.style.width = docWidth + 'px';
-        canvas.style.height = (window.innerHeight * 0.9) + 'px';
-        canvas.width = docWidth * dpr;
-        canvas.height = (window.innerHeight * 0.9) * dpr;
-        ctx.scale(dpr, dpr);
+        
+        function resize() {
+            const containerWidth = window.innerWidth;
+            const containerHeight = window.innerHeight;
+            
+            canvas.style.width = Math.min(containerWidth, docWidth) + 'px';
+            canvas.style.height = containerHeight + 'px';
+            
+            canvas.width = Math.min(containerWidth, docWidth) * dpr;
+            canvas.height = containerHeight * dpr;
+            
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.scale(dpr * (Math.min(containerWidth, docWidth) / docWidth), dpr);
+            draw();
+        }
 
         let scrollY = 0;
-        const maxScroll = docHeight - (window.innerHeight * 0.9);
+        const maxScroll = docHeight - window.innerHeight;
 
         const LLA_VIOLET = "#5a2d82";
         const LLA_GOLD = "#ffcc00";
 
-        const mileiImg = new Image();
-        mileiImg.crossOrigin = "Anonymous";
-        mileiImg.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Javier_Milei_Presidential_Portrait.jpg/400px-Javier_Milei_Presidential_Portrait.jpg";
-        
-        let imgLoaded = false;
-        mileiImg.onload = () => {
-            imgLoaded = true;
-            draw();
-        };
-
         const causas = [
-            {
-                titulo: "ESCÁNDALO DE ALIMENTOS Y CONTRATOS OEI",
-                involucrados: "Sandra Pettovello, Pablo de la Torre.",
-                detalle: "Retención de 5.000 tons de alimentos en depósitos estatales mientras se negaba la entrega a comedores. Denuncias por sobresueldos vía contratos con la OEI.",
-                estado: "IMPUTACIÓN JUDICIAL",
-                color: "#dc2626"
-            },
             {
                 titulo: "DESFALCO Y CRISIS EN EL IOSFA",
                 involucrados: "Luis Petri (Min. Defensa), Darío Messina (IOSFA).",
@@ -154,36 +131,6 @@
             }
         ];
 
-        function drawMileiFace(x, y, radius) {
-            ctx.save();
-            ctx.translate(x, y);
-            const shadow = ctx.createRadialGradient(0, 0, radius, 0, 0, radius + 10);
-            shadow.addColorStop(0, 'rgba(255, 204, 0, 0.4)');
-            shadow.addColorStop(1, 'rgba(255, 204, 0, 0)');
-            ctx.fillStyle = shadow;
-            ctx.beginPath();
-            ctx.arc(0, 0, radius + 10, 0, Math.PI * 2);
-            ctx.fill();
-
-            ctx.beginPath();
-            ctx.arc(0, 0, radius + 3, 0, Math.PI * 2);
-            ctx.fillStyle = LLA_GOLD;
-            ctx.fill();
-
-            if (imgLoaded) {
-                ctx.beginPath();
-                ctx.arc(0, 0, radius, 0, Math.PI * 2);
-                ctx.clip();
-                ctx.drawImage(mileiImg, -radius, -radius * 1.1, radius * 2, radius * 2.4);
-            } else {
-                ctx.beginPath();
-                ctx.arc(0, 0, radius, 0, Math.PI * 2);
-                ctx.fillStyle = "#e5e7eb";
-                ctx.fill();
-            }
-            ctx.restore();
-        }
-
         function wrapText(context, text, x, y, maxWidth, lineHeight) {
             let words = text.split(' ');
             let line = '';
@@ -204,28 +151,29 @@
             ctx.save();
             ctx.translate(0, -scrollY);
 
+            // Background
             ctx.fillStyle = "#f8fafc";
             ctx.fillRect(0, 0, docWidth, docHeight);
 
-            const headerGrad = ctx.createLinearGradient(0, 0, 0, 200);
+            // Header
+            const headerGrad = ctx.createLinearGradient(0, 0, 0, 180);
             headerGrad.addColorStop(0, "#2b0a42");
             headerGrad.addColorStop(1, LLA_VIOLET);
             ctx.fillStyle = headerGrad;
-            ctx.fillRect(0, 0, docWidth, 200);
+            ctx.fillRect(0, 0, docWidth, 180);
             
-            drawMileiFace(100, 100, 60);
-
+            // Header Text Centered
             ctx.fillStyle = LLA_GOLD;
             ctx.font = "900 36px -apple-system, sans-serif";
-            ctx.textAlign = "left";
+            ctx.textAlign = "center";
             ctx.letterSpacing = "1px";
-            ctx.fillText("LA LIBERTAD AVANZA", 190, 95);
+            ctx.fillText("LA LIBERTAD AVANZA", docWidth / 2, 85);
             
             ctx.fillStyle = "rgba(255,255,255,0.9)";
             ctx.font = "500 15px -apple-system, sans-serif";
-            ctx.fillText("INFORME DE AUDITORÍA Y REGISTRO DE CAUSAS JUDICIALES", 190, 125);
+            ctx.fillText("INFORME DE AUDITORÍA Y REGISTRO DE CAUSAS JUDICIALES", docWidth / 2, 115);
 
-            let currentY = 240;
+            let currentY = 220;
             const margin = 45;
 
             causas.forEach((c) => {
@@ -273,12 +221,6 @@
                 currentY += boxHeight + 35;
             });
 
-            ctx.save();
-            ctx.translate(docWidth / 2, docHeight - 120);
-            ctx.globalAlpha = 0.05;
-            drawMileiFace(0, 0, 120);
-            ctx.restore();
-
             ctx.restore();
         }
 
@@ -309,14 +251,8 @@
         }, { passive: false });
         canvas.addEventListener('touchend', () => isDragging = false);
 
-        window.onload = draw;
-        window.onresize = () => {
-            const h = window.innerHeight * 0.9;
-            canvas.style.height = h + 'px';
-            canvas.height = h * dpr;
-            ctx.scale(dpr, dpr);
-            draw();
-        };
+        window.onload = resize;
+        window.onresize = resize;
     </script>
 </body>
 </html>
