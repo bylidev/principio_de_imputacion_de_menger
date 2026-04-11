@@ -1,51 +1,322 @@
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Principio de imputacion de menger</title>
-    <link rel="stylesheet" href="/styles.css">
-    <link rel="icon" href="/assets/icon.png" type="image/png" sizes="32x32">
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
+    <title>Informe de Gestión: Registro de Causas LLA</title>
+    <style>
+        :root {
+            --lla-violet: #5a2d82;
+            --lla-gold: #ffcc00;
+            --bg-dark: #0d0d0d;
+            --text-main: #2b0a42;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: radial-gradient(circle at top, #1a0b2e 0%, #0d0d0d 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            overflow: hidden;
+            color: white;
+        }
+        #canvas-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 20px;
+        }
+        canvas {
+            background-color: #ffffff;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            cursor: grab;
+            border-radius: 4px;
+        }
+        canvas:active {
+            cursor: grabbing;
+        }
+        .instructions {
+            position: fixed;
+            bottom: 30px;
+            background: rgba(13, 13, 13, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 12px 28px;
+            border-radius: 99px;
+            font-size: 13px;
+            font-weight: 500;
+            pointer-events: none;
+            border: 1px solid rgba(138, 43, 226, 0.4);
+            color: #eee;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+    </style>
 </head>
 <body>
-    <div id="header">
-        <div style="display: flex;align-items: center;">
-            <span><img src="./assets/icon.png" width="40px" height="40px"></span>
-            <small>Actualizado: <span id="updateDate"></span></small>
-        </div>
-        <button id="muteBtn" onclick="toggleAudio()">🔇</button>
+
+    <div id="canvas-container">
+        <canvas id="informeCanvas"></canvas>
     </div>
 
-    <audio id="mileiAudio" autoplay>
-        <source src="/assets/menger.mp3" type="audio/mpeg">
-        Tu navegador no soporta audio.
-    </audio>
+    <div class="instructions">Navegación: Rueda del mouse o arrastre vertical</div>
 
-    <div id="map"></div>
+    <script>
+        const canvas = document.getElementById('informeCanvas');
+        const ctx = canvas.getContext('2d', { alpha: false });
 
-    <div id="disclaimer">
-        Datos obtenidos de <a href="https://datos.produccion.gob.ar/dataset/sepa-precios" target="_blank">preciosclaros.gob.ar</a>
-    </div>
+        const docWidth = 800;
+        const docHeight = 2150; 
+        
+        const dpr = window.devicePixelRatio || 1;
+        canvas.style.width = docWidth + 'px';
+        canvas.style.height = (window.innerHeight * 0.9) + 'px';
+        canvas.width = docWidth * dpr;
+        canvas.height = (window.innerHeight * 0.9) * dpr;
+        ctx.scale(dpr, dpr);
 
-    <div class="social-icons">
-        <a href="https://github.com/bylidev/principio_de_imputacion_de_menger/tree/master" target="_blank" title="Ver en GitHub">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.54 5.47 7.61.4.07.55-.17.55-.39 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.01.08-2.11 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.91.08 2.11.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .22.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
-          </svg>
-        </a>
-        <a href="https://twitter.com/DonDinoKing" target="_blank" title="Ver en Twitter">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>
-        </a>
-        <a href="https://link.mercadopago.com.ar/principiomenger" target="_blank" class="heart" title="
-            Colabora con nosotros ❤️ !
-            Tenemos muchas ideas para que el ciudadano 
-            acceda a bienes de mejor calidad a un menor precio">❤️</a>
+        let scrollY = 0;
+        const maxScroll = docHeight - (window.innerHeight * 0.9);
 
-    </div>
-    <script src="./index.js"></script>
+        const LLA_VIOLET = "#5a2d82";
+        const LLA_GOLD = "#ffcc00";
+
+        const mileiImg = new Image();
+        mileiImg.crossOrigin = "Anonymous";
+        mileiImg.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Javier_Milei_Presidential_Portrait.jpg/400px-Javier_Milei_Presidential_Portrait.jpg";
+        
+        let imgLoaded = false;
+        mileiImg.onload = () => {
+            imgLoaded = true;
+            draw();
+        };
+
+        const causas = [
+            {
+                titulo: "ESCÁNDALO DE ALIMENTOS Y CONTRATOS OEI",
+                involucrados: "Sandra Pettovello, Pablo de la Torre.",
+                detalle: "Retención de 5.000 tons de alimentos en depósitos estatales mientras se negaba la entrega a comedores. Denuncias por sobresueldos vía contratos con la OEI.",
+                estado: "IMPUTACIÓN JUDICIAL",
+                color: "#dc2626"
+            },
+            {
+                titulo: "DESFALCO Y CRISIS EN EL IOSFA",
+                involucrados: "Luis Petri (Min. Defensa), Darío Messina (IOSFA).",
+                detalle: "Denuncias por vaciamiento de la obra social militar. Deuda de $30.000M, interrupción de tratamientos oncológicos y falta de insumos médicos básicos.",
+                estado: "EMERGENCIA MÉDICA",
+                color: LLA_VIOLET
+            },
+            {
+                titulo: "CONTRATACIONES Y ASCENSOS FAMILIARES",
+                involucrados: "Manuel Adorni, Francisco Adorni, Luis Petri.",
+                detalle: "Nombramiento de Francisco Adorni en Defensa con sueldo millonario. Ascensos de rango ministerial para el vocero con incrementos salariales discrecionales.",
+                estado: "DENUNCIA ÉTICA",
+                color: LLA_VIOLET
+            },
+            {
+                titulo: "TRASLADO DE RESERVAS DE ORO",
+                involucrados: "Santiago Bausili (BCRA), Luis Caputo (Min. Economía).",
+                detalle: "Envío físico de reservas de oro a Londres sin transparencia legislativa. Riesgo de embargo por litigios internacionales y falta de registro administrativo.",
+                estado: "DENUNCIA PENAL",
+                color: LLA_VIOLET
+            },
+            {
+                titulo: "IRREGULARIDADES EN ANSES Y SEGUROS",
+                involucrados: "Mariano de los Heros, Sandra Pettovello.",
+                detalle: "Investigación sobre la continuidad de esquemas de seguros con intermediarios y despidos masivos que paralizaron la atención en UDAI de todo el país.",
+                estado: "CRISIS OPERATIVA",
+                color: LLA_VIOLET
+            },
+            {
+                titulo: "FONDOS RESERVADOS SIDE",
+                involucrados: "Santiago Caputo (Asesor), Sergio Neiffert.",
+                detalle: "Asignación por DNU de $100.000 millones para inteligencia. Ejecución del 80% del presupuesto en semanas sin auditoría previa al rechazo del Congreso.",
+                estado: "INVESTIGACIÓN EJECUCIÓN",
+                color: "#dc2626"
+            },
+            {
+                titulo: "VIAJES CON FONDOS DEL ESTADO",
+                involucrados: "Karina Milei, Javier Milei.",
+                detalle: "Uso sistemático de la flota presidencial para traslados con fines de agenda personal, religiosa o partidaria en el exterior sin carácter institucional.",
+                estado: "BAJO LUPA FISCAL",
+                color: LLA_VIOLET
+            },
+            {
+                titulo: "PATRIMONIO Y PROPIEDADES DE ADORNI",
+                involucrados: "Manuel Adorni (Vocero Presidencial).",
+                detalle: "Inconsistencias patrimoniales relacionadas a la adquisición de departamentos y bienes de lujo. Denuncias sobre subsidios previos incompatibles con su rol.",
+                estado: "INVESTIGACIÓN PATRIMONIAL",
+                color: LLA_VIOLET
+            }
+        ];
+
+        function drawMileiFace(x, y, radius) {
+            ctx.save();
+            ctx.translate(x, y);
+            const shadow = ctx.createRadialGradient(0, 0, radius, 0, 0, radius + 10);
+            shadow.addColorStop(0, 'rgba(255, 204, 0, 0.4)');
+            shadow.addColorStop(1, 'rgba(255, 204, 0, 0)');
+            ctx.fillStyle = shadow;
+            ctx.beginPath();
+            ctx.arc(0, 0, radius + 10, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.arc(0, 0, radius + 3, 0, Math.PI * 2);
+            ctx.fillStyle = LLA_GOLD;
+            ctx.fill();
+
+            if (imgLoaded) {
+                ctx.beginPath();
+                ctx.arc(0, 0, radius, 0, Math.PI * 2);
+                ctx.clip();
+                ctx.drawImage(mileiImg, -radius, -radius * 1.1, radius * 2, radius * 2.4);
+            } else {
+                ctx.beginPath();
+                ctx.arc(0, 0, radius, 0, Math.PI * 2);
+                ctx.fillStyle = "#e5e7eb";
+                ctx.fill();
+            }
+            ctx.restore();
+        }
+
+        function wrapText(context, text, x, y, maxWidth, lineHeight) {
+            let words = text.split(' ');
+            let line = '';
+            for(let n = 0; n < words.length; n++) {
+                let testLine = line + words[n] + ' ';
+                if (context.measureText(testLine).width > maxWidth && n > 0) {
+                    context.fillText(line, x, y);
+                    line = words[n] + ' ';
+                    y += lineHeight;
+                } else { line = testLine; }
+            }
+            context.fillText(line, x, y);
+            return y;
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, docWidth, docHeight);
+            ctx.save();
+            ctx.translate(0, -scrollY);
+
+            ctx.fillStyle = "#f8fafc";
+            ctx.fillRect(0, 0, docWidth, docHeight);
+
+            const headerGrad = ctx.createLinearGradient(0, 0, 0, 200);
+            headerGrad.addColorStop(0, "#2b0a42");
+            headerGrad.addColorStop(1, LLA_VIOLET);
+            ctx.fillStyle = headerGrad;
+            ctx.fillRect(0, 0, docWidth, 200);
+            
+            drawMileiFace(100, 100, 60);
+
+            ctx.fillStyle = LLA_GOLD;
+            ctx.font = "900 36px -apple-system, sans-serif";
+            ctx.textAlign = "left";
+            ctx.letterSpacing = "1px";
+            ctx.fillText("LA LIBERTAD AVANZA", 190, 95);
+            
+            ctx.fillStyle = "rgba(255,255,255,0.9)";
+            ctx.font = "500 15px -apple-system, sans-serif";
+            ctx.fillText("INFORME DE AUDITORÍA Y REGISTRO DE CAUSAS JUDICIALES", 190, 125);
+
+            let currentY = 240;
+            const margin = 45;
+
+            causas.forEach((c) => {
+                const boxHeight = 185;
+                const cardW = docWidth - (margin * 2);
+
+                ctx.save();
+                ctx.shadowColor = "rgba(0,0,0,0.06)";
+                ctx.shadowBlur = 20;
+                ctx.shadowOffsetY = 10;
+                ctx.fillStyle = "#ffffff";
+                ctx.beginPath();
+                ctx.roundRect(margin, currentY, cardW, boxHeight, 16);
+                ctx.fill();
+                ctx.restore();
+
+                ctx.fillStyle = LLA_VIOLET;
+                ctx.beginPath();
+                ctx.roundRect(margin, currentY, 8, boxHeight, {tl: 16, bl: 16});
+                ctx.fill();
+
+                ctx.textAlign = "left";
+                ctx.fillStyle = "#1e1b4b";
+                ctx.font = "bold 18px -apple-system, sans-serif";
+                ctx.fillText(c.titulo, margin + 35, currentY + 45);
+
+                ctx.fillStyle = "#6366f1";
+                ctx.font = "bold 12px -apple-system, sans-serif";
+                ctx.fillText("INVOLUCRADOS: " + c.involucrados.toUpperCase(), margin + 35, currentY + 70);
+
+                ctx.fillStyle = "#475569";
+                ctx.font = "400 15px -apple-system, sans-serif";
+                wrapText(ctx, c.detalle, margin + 35, currentY + 100, cardW - 70, 22);
+
+                ctx.font = "bold 11px -apple-system, sans-serif";
+                const tw = ctx.measureText(c.estado).width;
+                ctx.fillStyle = c.color;
+                ctx.beginPath();
+                ctx.roundRect(margin + 35, currentY + boxHeight - 38, tw + 20, 24, 12);
+                ctx.fill();
+
+                ctx.fillStyle = "#ffffff";
+                ctx.fillText(c.estado, margin + 45, currentY + boxHeight - 22);
+
+                currentY += boxHeight + 35;
+            });
+
+            ctx.save();
+            ctx.translate(docWidth / 2, docHeight - 120);
+            ctx.globalAlpha = 0.05;
+            drawMileiFace(0, 0, 120);
+            ctx.restore();
+
+            ctx.restore();
+        }
+
+        let isDragging = false;
+        let lastY = 0;
+
+        const performScroll = (delta) => {
+            scrollY = Math.max(0, Math.min(scrollY + delta, maxScroll));
+            requestAnimationFrame(draw);
+        };
+
+        window.addEventListener('wheel', (e) => performScroll(e.deltaY), { passive: true });
+        canvas.addEventListener('mousedown', (e) => { isDragging = true; lastY = e.clientY; });
+        window.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                performScroll((lastY - e.clientY) * 1.5);
+                lastY = e.clientY;
+            }
+        });
+        window.addEventListener('mouseup', () => isDragging = false);
+
+        canvas.addEventListener('touchstart', (e) => { isDragging = true; lastY = e.touches[0].clientY; }, { passive: true });
+        canvas.addEventListener('touchmove', (e) => {
+            if (isDragging) {
+                performScroll((lastY - e.touches[0].clientY) * 1.5);
+                lastY = e.touches[0].clientY;
+            }
+        }, { passive: false });
+        canvas.addEventListener('touchend', () => isDragging = false);
+
+        window.onload = draw;
+        window.onresize = () => {
+            const h = window.innerHeight * 0.9;
+            canvas.style.height = h + 'px';
+            canvas.height = h * dpr;
+            ctx.scale(dpr, dpr);
+            draw();
+        };
+    </script>
 </body>
 </html>
